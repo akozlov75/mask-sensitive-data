@@ -112,4 +112,18 @@ describe('Mask sensitive data', () => {
       ).toEqual('***********4567')
     })
   })
+
+  describe('Arrays', () => {
+    it('should return masked array of uuids', () => {
+      expect(
+        maskFunction([
+          '439a02e5-390e-49f3-a0a3-80d8def9ace4',
+          '43982692-386c-42dc-8837-93f479503c56'
+        ])
+      ).toEqual([
+        '439a02**************************ace4',
+        '439826**************************3c56'
+      ])
+    })
+  })
 })
