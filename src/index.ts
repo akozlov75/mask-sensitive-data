@@ -76,9 +76,9 @@ export default (
     visibleCharsFromStart,
     maskSymbol,
   } = options
-  const isObject = typeof text === 'object'
+  const shouldBeStringified = text instanceof (Object || Array)
 
-  let objectToBeMasked = isObject ? JSON.stringify(text) : text
+  let objectToBeMasked = shouldBeStringified ? JSON.stringify(text) : text
 
   if (emailPattern) {
     objectToBeMasked = replaceTextInObjectWithPattern(
@@ -128,5 +128,5 @@ export default (
     )
   }
 
-  return isObject ? JSON.parse(objectToBeMasked) : objectToBeMasked
+  return shouldBeStringified ? JSON.parse(objectToBeMasked) : objectToBeMasked
 }
