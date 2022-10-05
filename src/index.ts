@@ -1,25 +1,29 @@
 interface maskTextOptions {
   maskSymbol: string
+  maxCharsToMask: number
   visibleCharsFromEnd: number
   visibleCharsFromStart: number
 }
 
 interface maskOptions extends maskTextOptions {
-  bankCardNumberPattern?: RegExp|undefined
-  emailPattern?: RegExp|undefined
-  uuidPattern?: RegExp|undefined
-  phoneNumberPattern?: RegExp|undefined
+  bankCardNumberPattern?: RegExp | undefined
+  emailPattern?: RegExp | undefined
+  jwtPattern?: RegExp | undefined
+  phoneNumberPattern?: RegExp | undefined
+  uuidPattern?: RegExp | undefined
 }
 
 const defaultTextMaskOptions = {
+  maskSymbol: '*',
+  maxCharsToMask: 35,
   visibleCharsFromEnd: 4,
   visibleCharsFromStart: 6,
-  maskSymbol: '*',
 } as maskTextOptions
 
 export const defaultMaskOptions = {
   bankCardNumberPattern: /([\d]{4}\W){3}[\d]{4}/g,
   emailPattern: /[\w+\.+\-]+@+[\w+\.+\-]+[\.\w]{2,}/g,
+  jwtPattern: /[\w-]*\.[\w-]*\.[\w-]*/g,
   uuidPattern: /[\w]{8}\b-[\w]{4}\b-[\w]{4}\b-[\w]{4}\b-[\w]{12}/g,
   phoneNumberPattern:
     /[\+]?[\d]{1,3}?[-\s\.]?[(]?[\d]{1,3}[)]?[-\s\.]?([\d-\s\.]){7,12}/g,
@@ -32,7 +36,12 @@ const maskString = (
 ): string => {
   if (!text) return text
 
-  const { visibleCharsFromStart, visibleCharsFromEnd, maskSymbol } = options
+  const {
+    maskSymbol,
+    maxCharsToMask,
+    visibleCharsFromEnd,
+    visibleCharsFromStart,
+  } = options
 
   const unmaskedPartFromStart = text.slice(0, visibleCharsFromStart)
   const unmaskedPartFromEnd = text.slice(-visibleCharsFromEnd)
@@ -40,10 +49,14 @@ const maskString = (
     visibleCharsFromStart,
     -visibleCharsFromEnd
   )
+  const maskedCharsCount =
+    partShouldBeMasked.length > maxCharsToMask
+      ? maxCharsToMask
+      : partShouldBeMasked.length
 
   return [
     unmaskedPartFromStart,
-    maskSymbol.repeat(partShouldBeMasked.length),
+    maskSymbol.repeat(maskedCharsCount),
     unmaskedPartFromEnd,
   ].join('')
 }
@@ -70,60 +83,33 @@ export default (
   const {
     bankCardNumberPattern,
     emailPattern,
-    uuidPattern,
+    jwtPattern,
+    maskSymbol,
+    maxCharsToMask,
     phoneNumberPattern,
+    uuidPattern,
     visibleCharsFromEnd,
     visibleCharsFromStart,
-    maskSymbol,
   } = options
   const shouldBeStringified = text instanceof (Object || Array)
 
   let objectToBeMasked = shouldBeStringified ? JSON.stringify(text) : text
 
-  if (emailPattern) {
+  for (const pattern of [
+    bankCardNumberPattern,
+    emailPattern,
+    jwtPattern,
+    uuidPattern,
+    phoneNumberPattern,
+  ]) {
     objectToBeMasked = replaceTextInObjectWithPattern(
       objectToBeMasked,
-      emailPattern,
+      pattern as RegExp,
       {
-        visibleCharsFromStart,
-        visibleCharsFromEnd,
         maskSymbol,
-      }
-    )
-  }
-
-  if (bankCardNumberPattern) {
-    objectToBeMasked = replaceTextInObjectWithPattern(
-      objectToBeMasked,
-      bankCardNumberPattern,
-      {
-        visibleCharsFromStart,
+        maxCharsToMask,
         visibleCharsFromEnd,
-        maskSymbol,
-      }
-    )
-  }
-
-  if (uuidPattern) {
-    objectToBeMasked = replaceTextInObjectWithPattern(
-      objectToBeMasked,
-      uuidPattern,
-      {
         visibleCharsFromStart,
-        visibleCharsFromEnd,
-        maskSymbol,
-      }
-    )
-  }
-
-  if (phoneNumberPattern) {
-    objectToBeMasked = replaceTextInObjectWithPattern(
-      objectToBeMasked,
-      phoneNumberPattern,
-      {
-        visibleCharsFromStart,
-        visibleCharsFromEnd,
-        maskSymbol,
       }
     )
   }
