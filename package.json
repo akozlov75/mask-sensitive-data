@@ -1,6 +1,6 @@
 {
   "name": "mask-sensitive-data",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Mask sensitive data, eq. credit card numbers, phone numbers, emails, etc.",
   "main": "build/index.js",
   "scripts": {
