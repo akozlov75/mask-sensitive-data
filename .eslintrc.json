@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "ignorePatterns": ["/lib/**/*", "**/*.d.ts"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "eslint-plugin-jsdoc",
+    "eslint-plugin-prefer-arrow"
+  ],
+  "rules": {
+    "semi": [2, "never"],
+    "import/no-unresolved": 0,
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/quotes": ["error", "single", { "avoidEscape": true }],
+    "@typescript-eslint/no-extra-semi": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "require-await": "warn",
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    "no-debugger": "error",
+    "eqeqeq": "error",
+    "no-nested-ternary": "error",
+    "no-trailing-spaces": "error",
+    "computed-property-spacing": ["error", "never"]
+  }
+}
