@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --ext .ts",
-    "npm:publish": "npm publish",
+    "npm:publish": "npm run build && npm publish",
     "test": "jest",
     "test:coverage": "npm run test --  --coverage",
     "test:tdd": "npm run test -- --watch"
