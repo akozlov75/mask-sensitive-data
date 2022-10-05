@@ -11,7 +11,7 @@ npm install mask-sesitive-data
 ## Usage
 
 ```ts
-import mask from 'mask-sensitive-data'
+import maskSensitiveData from 'mask-sensitive-data'
 
 const objectToBeMasked = {
   email: 'john.doe@testdomain.com',
@@ -39,7 +39,7 @@ const objectToBeMasked = {
 }
 
 // Mask object with sensitive data
-mask(objectToBeMasked)
+maskSensitiveData(objectToBeMasked)
 // -> {
 //      creditCard: '1234 5*********9876',
 //      email: 'john.d*************.com',
@@ -66,11 +66,11 @@ mask(objectToBeMasked)
 //    }
 
 // Mask uuid string
-mask(objectToBeMasked.id)
+maskSensitiveData(objectToBeMasked.id)
 // -> 3f8a43**************************d77b
 
 // Mask credit card number string with custom options
-mask(
+maskSensitiveData(
   objectToBeMasked.creditCard,
   {
     ...defaultMaskOptions,
@@ -79,8 +79,18 @@ mask(
 )
 // -> ***************9876
 
+// Mask array of uuids
+maskSensitiveData([
+  '439a02e5-390e-49f3-a0a3-80d8def9ace4',
+  '43982692-386c-42dc-8837-93f479503c56'
+])
+// -> [
+//      '439a02**************************ace4',
+//      '439826**************************3c56'
+//    ]
+
 // Mask object data and skip uuid from masking
-mask(
+maskSensitiveData(
   objectToBeMasked,
   {
     ...defaultMaskOptions,
@@ -117,11 +127,11 @@ mask(
 
 * Usage
 
-  `mask-sensitive-data(stringOrObject, options)`
+  `maskSensitiveData(objectToBeMasked, options)`
 
-* `stringOrObject`
+* `objectToBeMasked`
 
-  Object or string to be masked
+  Object, Array of strings or just string to be masked
 
 * `options`
 
