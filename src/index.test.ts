@@ -49,7 +49,7 @@ describe('Mask sensitive data', () => {
           name: 'John',
           surname: 'Smith',
           phone: '+358 (********4567',
-          token: "eyJraW***********************************yyDw",
+          token: 'eyJraW***********************************yyDw',
           subuser: {
             creditCard: '1234-0*********0000',
             email: 'don.jo*************.com',
@@ -84,7 +84,7 @@ describe('Mask sensitive data', () => {
           name: 'John',
           surname: 'Smith',
           phone: '+358 (********4567',
-          token: "eyJraW***********************************yyDw",
+          token: 'eyJraW***********************************yyDw',
           subuser: {
             creditCard: '1234-0*********0000',
             email: 'don.jo*************.com',
