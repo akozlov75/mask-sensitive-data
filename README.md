@@ -159,9 +159,9 @@ maskSensitiveData(
 
   **jwtPattern**: RegExp|undefined - RegExp pattern to recognize JWT tokens
 
-  **uuidPattern**: RegExp|undefined - RegExp pattern to recognize UUID identificators
-
   **phoneNumberPattern**: RegExp|undefined - RegExp pattern to recognize phone numbers
+
+  **uuidPattern**: RegExp|undefined - RegExp pattern to recognize UUID identificators
 
   **maskSymbol**: string - Symbol to replace masked chars
 
