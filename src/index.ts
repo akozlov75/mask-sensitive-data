@@ -85,43 +85,48 @@ export default (
   text: object | string,
   options = defaultMaskOptions
 ): object | string => {
-  const {
-    bankCardNumberPattern,
-    emailPattern,
-    jwtPattern,
-    phoneNumberPattern,
-    uuidPattern,
-    maxCharsToMask,
-    maskSymbol,
-    visibleCharsFromEnd,
-    visibleCharsFromStart,
-  } = options
-  const shouldBeStringified = text instanceof (Object || Array)
+  try {
+    const {
+      bankCardNumberPattern,
+      emailPattern,
+      jwtPattern,
+      phoneNumberPattern,
+      uuidPattern,
+      maxCharsToMask,
+      maskSymbol,
+      visibleCharsFromEnd,
+      visibleCharsFromStart,
+    } = options
+    const shouldBeStringified = text instanceof (Object || Array)
 
-  let objectToBeMasked = (
-    MASKED_TEXT = shouldBeStringified
-      ? JSON.stringify(text)
-      : text
-  )
-
-  for (const pattern of [
-    bankCardNumberPattern,
-    emailPattern,
-    jwtPattern,
-    uuidPattern,
-    phoneNumberPattern,
-  ]) {
-    objectToBeMasked = replaceTextInObjectWithPattern(
-      objectToBeMasked,
-      pattern as RegExp,
-      {
-        maskSymbol,
-        maxCharsToMask,
-        visibleCharsFromEnd,
-        visibleCharsFromStart,
-      }
+    let objectToBeMasked = (
+      MASKED_TEXT = shouldBeStringified
+        ? JSON.stringify(text)
+        : text
     )
-  }
 
-  return shouldBeStringified ? JSON.parse(MASKED_TEXT) : MASKED_TEXT
+    for (const pattern of [
+      bankCardNumberPattern,
+      emailPattern,
+      jwtPattern,
+      uuidPattern,
+      phoneNumberPattern,
+    ]) {
+      objectToBeMasked = replaceTextInObjectWithPattern(
+        objectToBeMasked,
+        pattern as RegExp,
+        {
+          maskSymbol,
+          maxCharsToMask,
+          visibleCharsFromEnd,
+          visibleCharsFromStart,
+        }
+      )
+    }
+
+    return shouldBeStringified ? JSON.parse(MASKED_TEXT) : MASKED_TEXT
+  } catch (error) {
+    console.warn('mask-sensitive-data:index:default', error)
+    return MASKED_TEXT
+  }
 }
