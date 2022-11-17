@@ -1,3 +1,5 @@
+import stringify from 'json-stringify-safe'
+import { parse } from 'secure-json-parse'
 interface maskTextOptions {
   maskSymbol: string
   maxCharsToMask: number
@@ -101,7 +103,7 @@ export default (
 
     let objectToBeMasked = (
       MASKED_TEXT = shouldBeStringified
-        ? JSON.stringify(text)
+        ? stringify(text)
         : text
     )
 
@@ -124,7 +126,7 @@ export default (
       )
     }
 
-    return shouldBeStringified ? JSON.parse(MASKED_TEXT) : MASKED_TEXT
+    return shouldBeStringified ? parse(MASKED_TEXT) : MASKED_TEXT
   } catch (error) {
     console.warn('mask-sensitive-data:index:default', error)
     return MASKED_TEXT
