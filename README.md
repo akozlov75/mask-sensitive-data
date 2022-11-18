@@ -12,7 +12,7 @@ Supports the below-mentioned items:
 ## Install
 
 ```shell
-npm install mask-sesitive-data
+npm install mask-sensitive-data
 ```
 
 ## Usage
