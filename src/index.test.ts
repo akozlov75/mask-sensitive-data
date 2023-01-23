@@ -1,4 +1,4 @@
-import maskFunction, { defaultMaskOptions  } from '.'
+import maskFunction, { defaultMaskOptions } from '.'
 import shopifyOrderExample from './__mock__/shopify_order.json'
 
 const testObject = {
@@ -31,6 +31,12 @@ const testObject = {
     },
   },
 }
+
+const multilineTestString = `
+https://www.rfc-editor.org/rfc/rfc6531 allows international characters
+in email, for example ääöö@åå.com, and we might want to find them also.
+In addition, we might not want to match all string containting @-sign,
+like foo@bar since this is not an email-address. `
 
 describe('Mask sensitive data', () => {
   describe('Object', () => {
@@ -123,6 +129,20 @@ describe('Mask sensitive data', () => {
           visibleCharsFromStart: 0,
         })
       ).toEqual('***********4567')
+    })
+
+    it('should mask sensitive information from multiline string', () => {
+      expect(
+        maskFunction(multilineTestString, {
+          ...defaultMaskOptions,
+          visibleCharsFromStart: 0,
+          visibleCharsFromEnd: 0,
+        })
+      ).toEqual(`
+https://******************/rfc/rfc6531 allows international characters
+in email, for example ***********, and we might want to find them also.
+In addition, we might not want to match all string containting @-sign,
+like foo@bar since this is not an email-address. `)
     })
   })
 
