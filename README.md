@@ -18,7 +18,7 @@ npm install mask-sensitive-data
 ## Usage
 
 ```ts
-import maskSensitiveData from 'mask-sensitive-data'
+import maskSensitiveData, { maskString } from 'mask-sensitive-data'
 
 const objectToBeMasked = {
   email: 'john.doe@example.com',
@@ -51,36 +51,36 @@ const objectToBeMasked = {
 // Mask object properties with default options
 maskSensitiveData(objectToBeMasked)
 // -> {
-//      creditCard: '1234 5*********9876',
-//      email: 'john.d*************.com',
-//      id: '3f8a43**************************d77b',
+//      creditCard: '1234 5#########9876',
+//      email: 'john.d#############.com',
+//      id: '3f8a43##########################d77b',
 //      name: 'John',
 //      surname: 'Doe',
-//      phone: '+358 4*****4567',
-//      token: 'eyJhbG***********************************F_b8',
+//      phone: '+358 4#####4567',
+//      token: 'eyJhbG###################################F_b8',
 //      subuser: {
-//        creditCard: '0987 6*********1234',
-//        email: 'john.s***************.com',
-//        id: '7c9425**************************6733',
+//        creditCard: '0987 6#########1234',
+//        email: 'john.s###############.com',
+//        id: '7c9425##########################6733',
 //        name: 'John',
 //        surname: 'Smith',
-//        phone: '+358 (********4567',
-//        token: "eyJraW***********************************yyDw",
+//        phone: '+358 (########4567',
+//        token: "eyJraW###################################yyDw",
 //        subuser: {
-//          creditCard: '1234-0*********0000',
-//          email: 'don.jo****************.com',
-//          id: '12882e**************************7592',
+//          creditCard: '1234-0#########0000',
+//          email: 'don.jo################.com',
+//          id: '12882e##########################7592',
 //          name: 'Don',
 //          surname: 'Johnson',
-//          phone: '040-12*4567',
-//          token: 'eyJraW***********************************dpBI',
+//          phone: '040-12#4567',
+//          token: 'eyJraW###################################dpBI',
 //        },
 //      },
 //    }
 
 // Mask uuid string with default options
 maskSensitiveData(objectToBeMasked.id)
-// -> 3f8a43**************************d77b
+// -> 3f8a43##########################d77b
 
 // Mask credit card number string with custom options
 maskSensitiveData(
@@ -90,7 +90,7 @@ maskSensitiveData(
     visibleCharsFromStart: 0,
   }
 )
-// -> ***************9876
+// -> ###############9876
 
 // Mask array of UUIDs with default options
 maskSensitiveData([
@@ -98,8 +98,8 @@ maskSensitiveData([
   '43982692-386c-42dc-8837-93f479503c56'
 ])
 // -> [
-//      '439a02**************************ace4',
-//      '439826**************************3c56'
+//      '439a02##########################ace4',
+//      '439826##########################3c56'
 //    ]
 
 // Mask object properties with custom options (skip UUID strings from masking)
@@ -111,32 +111,48 @@ maskSensitiveData(
   }
 )
 // -> {
-//      creditCard: '1234 5*********9876',
-//      email: 'john.d*************.com',
+//      creditCard: '1234 5#########9876',
+//      email: 'john.d#############.com',
 //      id: '3f8a43fd-6489-4ec7-bd55-7a1ba172d77b',
 //      name: 'John',
 //      surname: 'Smith',
-//      phone: '+358 4*****4567',
-//      token: 'eyJhbG***********************************F_b8',
+//      phone: '+358 4#####4567',
+//      token: 'eyJhbG###################################F_b8',
 //      subuser: {
-//        creditCard: '0987 6*********1234',
-//        email: 'john.s***************.com',
+//        creditCard: '0987 6#########1234',
+//        email: 'john.s###############.com',
 //        id: '7c942511-969b-4363-af11-9667bf756733',
 //        name: 'John',
 //        surname: 'Doe',
-//        phone: '+358 (********4567',
-//        token: "eyJraW***********************************yyDw",
+//        phone: '+358 (########4567',
+//        token: "eyJraW###################################yyDw",
 //        subuser: {
-//          creditCard: '1234-0*********0000',
-//          email: 'don.jo****************.com',
-//          id: '12882e75-a726-46*****31-6ee428e07592',
+//          creditCard: '1234-0#########0000',
+//          email: 'don.jo################.com',
+//          id: '12882e75-a726-46#####31-6ee428e07592',
 //          name: 'Don',
 //          surname: 'Johnson',
-//          phone: '040-12*4567',
-//          token: 'eyJraW***********************************dpBI',
+//          phone: '040-12#4567',
+//          token: 'eyJraW###################################dpBI',
 //        },
 //      },
 //    }
+
+// Mask plain string
+maskString('john.doe@example.com')
+// -> john.d##########.com
+
+// Mask plain string with custom configuration
+maskString(
+  'john.doe@example.com',
+  {
+    maskSymbol: '#',
+    maxCharsToMask: 'john.doe@example.com'.length,
+    visibleCharsFromStart: 0,
+    visibleCharsFromEnd: 0,
+  }
+)
+// -> ####################
 ```
 
 ## API
@@ -177,10 +193,10 @@ maskSensitiveData(
   {
     bankCardNumberPattern: /([\d]{4}\W){3}[\d]{4}/g,
     emailPattern: /[\w+\.+\-]+@+[\w+\.+\-]+[\.\w]{2,}/g,
-    jwtPattern: /[\w-]*\.[\w-]*\.[\w-]*/g,
+    jwtPattern: /[\w-]#\.[\w-]#\.[\w-]#/g,
     phoneNumberPattern: /[\+]?[\d]{1,3}?[-\s\.]?[(]?[\d]{1,3}[)]?[-\s\.]?([\d-\s\.]){7,12}/g,
     uuidPattern: /[\w]{8}\b-[\w]{4}\b-[\w]{4}\b-[\w]{4}\b-[\w]{12}/g,
-    maskSymbol: '*',
+    maskSymbol: '#',
     maxCharsToMask: 35,
     visibleCharsFromEnd: 4,
     visibleCharsFromStart: 6,
