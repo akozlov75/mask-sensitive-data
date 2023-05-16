@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-safe'
 import { parse } from 'secure-json-parse'
-interface maskTextOptions {
+export interface maskTextOptions {
   maskSymbol: string
   maxCharsToMask: number
   visibleCharsFromEnd: number
@@ -18,7 +18,7 @@ interface maskOptions extends maskTextOptions {
 let MASKED_TEXT = ''
 
 const defaultTextMaskOptions = {
-  maskSymbol: '*',
+  maskSymbol: '#',
   maxCharsToMask: 35,
   visibleCharsFromEnd: 4,
   visibleCharsFromStart: 6,
@@ -34,7 +34,7 @@ export const defaultMaskOptions = {
   ...defaultTextMaskOptions,
 } as maskOptions
 
-const maskString = (
+export const maskString = (
   text: string,
   options = defaultTextMaskOptions
 ): string => {
@@ -129,7 +129,7 @@ export default (
 
     return shouldBeStringified ? parse(MASKED_TEXT) : MASKED_TEXT
   } catch (error) {
-    console.warn('mask-sensitive-data:index:default', error)
+    // Return stringified output when for some reason `parse` throw an error
     return MASKED_TEXT
   }
 }
