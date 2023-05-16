@@ -26,7 +26,7 @@ const defaultTextMaskOptions = {
 
 export const defaultMaskOptions = {
   bankCardNumberPattern: /([\d]{4}\W){3}[\d]{4}/g,
-  emailPattern: /[\w+\.+\-]+@+[\w+\.+\-]+[\.\w]{2,}/g,
+  emailPattern: /[\w.öäå-]+@[\w.öäå-]+\.[a-z]{2,}/gim,
   jwtPattern: /[\w-]*\.[\w-]*\.[\w-]*/g,
   phoneNumberPattern:
     /[\+]?[\d]{1,3}?[-\s\.]?[(]?[\d]{1,3}[)]?[-\s\.]?([\d-\s\.]){7,12}/g,
@@ -48,11 +48,12 @@ const maskString = (
   } = options
 
   const unmaskedPartFromStart = text.slice(0, visibleCharsFromStart)
-  const unmaskedPartFromEnd = text.slice(-visibleCharsFromEnd)
-  const partShouldBeMasked = text.slice(
-    visibleCharsFromStart,
-    -visibleCharsFromEnd
-  )
+  const unmaskedPartFromEnd =
+    visibleCharsFromEnd > 0 ? text.slice(-visibleCharsFromEnd) : ''
+  const partShouldBeMasked =
+    visibleCharsFromEnd > 0
+      ? text.slice(visibleCharsFromStart, -visibleCharsFromEnd)
+      : text.slice(visibleCharsFromStart)
   const maskedCharsCount =
     partShouldBeMasked.length > maxCharsToMask
       ? maxCharsToMask
