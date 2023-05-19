@@ -1,11 +1,11 @@
 {
   "name": "mask-sensitive-data",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Mask sensitive data, eg. credit card numbers, phone numbers, emails, UUIDs, JWT tokens.",
   "source": "src/index.ts",
   "main": "build/index.js",
   "umd:module": "build/index.umd.js",
-  "module": "build/index.cjs",
+  "module": "build/index.js",
   "type": "module",
   "scripts": {
     "build": "rm -rf build && microbundle --no-sourcemap",
