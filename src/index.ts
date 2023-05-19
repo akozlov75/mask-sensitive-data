@@ -1,5 +1,4 @@
-import stringify from 'json-stringify-safe'
-import { parse } from 'secure-json-parse'
+import { parse, stringify } from 'telejson'
 export interface maskTextOptions {
   maskSymbol: string
   maxCharsToMask: number
