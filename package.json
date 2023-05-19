@@ -1,6 +1,6 @@
 {
   "name": "mask-sensitive-data",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "description": "Mask sensitive data, eg. credit card numbers, phone numbers, emails, UUIDs, JWT tokens.",
   "source": "src/index.ts",
   "main": "build/index.js",
@@ -8,7 +8,8 @@
   "module": "build/index.js",
   "type": "module",
   "scripts": {
-    "build": "rm -rf build && microbundle --no-sourcemap",
+    "build": "rm -rf build && tsc",
+    "build:microbundler": "rm -rf build && microbundle --no-sourcemap",
     "lint": "eslint --ext .ts",
     "npm:publish": "npm run build && npm publish",
     "test": "jest",
