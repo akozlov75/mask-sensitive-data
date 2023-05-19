@@ -1,8 +1,7 @@
 {
   "name": "mask-sensitive-data",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "Mask sensitive data, eg. credit card numbers, phone numbers, emails, UUIDs, JWT tokens.",
-  "source": "src/index.ts",
   "main": "build/index.js",
   "scripts": {
     "build": "rm -rf build && tsc",
